@@ -8,170 +8,9 @@
 import Foundation
 import Combine
 
-protocol ShiftsDataSource {
-    
-    var currentValue: [Shift] { get }
-    
-    func shiftsSource() -> AnyPublisher<[Shift], Never>
-    func fetchInitial() -> AnyPublisher<Void, Error>
-    func fetchNext() -> AnyPublisher<Void, Error>
-}
-
-
-final class DefaultShiftsDataSource: ShiftsDataSource {
-    
-    enum DefaultShiftsDataSourceError: LocalizedError {
-        case cannotCreateDates
-    }
-    
-    var currentValue: [Shift] { value.value }
-    
-    private lazy var selectedDate: Date = timeManager.now
-    
-    private var timeManager: AppTimeManager = AppRealTimeManager()
-    
-    private var shiftsRepository: ShiftsRepository = ShiftsRepository()
-    
-    private var value = CurrentValueSubject<[Shift], Never>([])
-    
-    func shiftsSource() -> AnyPublisher<[Shift], Never> {
-        value.eraseToAnyPublisher()
-    }
-    
-    
-    var currentStartDate: Date? {
-        if timeManager.now.compare(selectedDate) == .orderedAscending {
-            return timeManager.now
-        } else {
-            return selectedDate.startOfWeek(timeManager: timeManager)?.startOfDay(timeManager: timeManager)
-        }
-    }
-    
-    var currentEndDate: Date? {
-        currentStartDate?.endOfWeek(timeManager: timeManager)?.endOfDay(timeManager: timeManager)
-    }
-    
-    func fetchInitial() -> AnyPublisher<Void, Error> {
-        selectedDate = timeManager.now
-        return fetchWithSelectedDate()
-    }
-    
-    func fetchWithSelectedDate() -> AnyPublisher<Void, Error> {
-        guard
-            let startDate = currentStartDate,
-            let endDate = currentEndDate
-        else {
-            return Fail(outputType: Void.self, failure: DefaultShiftsDataSourceError.cannotCreateDates).eraseToAnyPublisher()
-        }
-        
-        return shiftsRepository.fetchShifts(
-            responseType: .week,
-            start: startDate,
-            end: endDate,
-            address: "Dallas, TX",
-            radius: nil
-        )
-        .handleEvents(
-            receiveOutput: { [weak self] nextValue in
-                guard let self = self else { return }
-                self.value.send(nextValue + self.value.value)
-            }
-        )
-        .eraseToAnyPublisher()
-        .mapToVoid()
-    }
-    
-    func fetchNext() -> AnyPublisher<Void, Error> {
-        selectedDate = selectedDate.byAdding(value: 1, component: .weekOfYear, timeManager: timeManager)
-        return fetchWithSelectedDate()
-    }
-}
-
-/// Component conforming to this protocol should
-/// return useful data about current time and place.
-/// Because the user can change the timezone data provided from this
-/// component should be processed at every request or display the data
-/// (The timezone or locale cannot be cached somewhere).
-protocol AppTimeManager {
-    /// Returns computing timezone.
-    var timezone: TimeZone { get set }
-    /// Returns computing locale.
-    var locale: Locale { get set }
-    /// Returns computing current date.
-    var now: Date { get }
-    /// Returns current calendar domain
-    var calendar: Calendar { get }
-}
-
-
-final class AppRealTimeManager: AppTimeManager {
-    var timezone = TimeZone.autoupdatingCurrent
-    var locale = Locale.autoupdatingCurrent
-    var now: Date { Date() }
-    private(set) var calendar: Calendar
-
-    init() {
-        var systemCalendar: Calendar = .autoupdatingCurrent
-        systemCalendar.firstWeekday = 2
-        calendar = systemCalendar
-    }
-}
-
-final class AppPreviewTimeManager: AppTimeManager {
-    var timezone = TimeZone.current
-    var locale = Locale.current
-    var now: Date {
-        Date(timeIntervalSince1970: 1648807200) // First April 2022
-    }
-
-    private(set) var calendar: Calendar
-
-    init() {
-        var systemCalendar: Calendar = .current
-        systemCalendar.firstWeekday = 2
-        calendar = systemCalendar
-    }
-}
-
-
-extension Date {
-    
-    /// Returns start of the week date.
-    func startOfWeek(timeManager: AppTimeManager) -> Date? {
-        let weekNumber = timeManager.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)
-        return timeManager.calendar.date(from: weekNumber)
-    }
-
-    /// Returns end of the week date.
-    func endOfWeek(timeManager: AppTimeManager) -> Date? {
-        guard let start = startOfWeek(timeManager: timeManager) else { return nil }
-        return timeManager.calendar.date(byAdding: .day, value: 6, to: start)
-    }
-
-    /// Returns start of day date.
-   func startOfDay(timeManager: AppTimeManager) -> Date {
-       timeManager.calendar.startOfDay(for: self)
-   }
-    
-    func byAdding(value: Int, component: Calendar.Component, timeManager: AppTimeManager) -> Date {
-        timeManager.calendar.date(byAdding: component, value: value, to: self) ?? timeManager.now
-    }
-
-
-   /// Returns end of day date.
-   func endOfDay(timeManager: AppTimeManager) -> Date {
-       guard let nextDayDate = timeManager.calendar.date(
-           byAdding: .day,
-           value: 1,
-           to: startOfDay(timeManager: timeManager)
-       ) else {
-           preconditionFailure("This should never fail")
-       }
-       return nextDayDate.addingTimeInterval(-1)
-   }
-}
-
-
+/// Component which is used for fetching data from the real external service.
+// TODO: - Extract API client from here to reuse it between next repositories.
+// TODO: - Remove limit of fetching the shifts.
 final class ShiftsRepository {
     
     enum ResponseType: String {
@@ -191,7 +30,6 @@ final class ShiftsRepository {
         $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
 
-    
     /// Requests the API services for data about shifts.
     /// - Parameters:
     ///   - responseType: Response type.
@@ -199,7 +37,7 @@ final class ShiftsRepository {
     ///   - end:  End date/datetime. Only applicable when type query param is list.
     ///   - address: Address to serve as the search location. Disregarded if lat and lng are provided. A 422 is returned if the address cannot be geo-coded.
     ///   - radius: Distance from lat/lng or address to be used in the shift search. Defaults to 150 if nil. Distance is in miles.
-    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+    /// - Returns: Publisher which fetches requested data about shifts.
     func fetchShifts(
         responseType: ResponseType?,
         start: Date?,
@@ -223,7 +61,7 @@ final class ShiftsRepository {
                 try shiftsDayResponse.shifts.map { shiftResponse in
                     try self.map(shiftResponse: shiftResponse)
                 }
-            }.prefix(upTo: 15))
+            }.prefix(upTo: 15)) // TODO: - Remove this to load real data. This limit makes app usable.
         }
         .eraseToAnyPublisher()
     }
@@ -231,6 +69,7 @@ final class ShiftsRepository {
 
 private extension ShiftsRepository {
     
+    // MARK: Error handling
     enum ShiftsRepositoryError: LocalizedError {
         case wrongDateFormat(text: String)
     
@@ -244,6 +83,8 @@ private extension ShiftsRepository {
             "Contact support" // TODO: - Place into localisables
         }
     }
+    
+    // MARK: Data structures
     
     struct ResponseContainer<T: Codable>: Codable {
         let data: T
@@ -304,6 +145,8 @@ private extension ShiftsRepository {
         }
     }
     
+    // MARK: Mapping to map model
+    
     func map(shiftResponse: ShiftResponse) throws -> Shift {
         Shift(
             shiftID: shiftResponse.shiftID,
@@ -349,6 +192,8 @@ private extension ShiftsRepository {
         )
     }
     
+    // MARK: Preparing request.
+    
     func shiftsData(
         responseType: ResponseType?,
         start: Date?,
@@ -376,7 +221,6 @@ private extension ShiftsRepository {
         start.flatMap {
             queryItems.append(URLQueryItem(name: "start", value: formatterISO8601.string(from: $0)))
         }
-        
         
         end.flatMap {
             queryItems.append(URLQueryItem(name: "end", value: formatterISO8601.string(from: $0)))

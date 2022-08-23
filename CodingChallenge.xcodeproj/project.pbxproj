@@ -33,6 +33,22 @@
 		A384FC7828B4126400AD5B41 /* Shift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC7728B4126400AD5B41 /* Shift.swift */; };
 		A384FC7A28B417F500AD5B41 /* FacilityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC7928B417F500AD5B41 /* FacilityType.swift */; };
 		A384FC7C28B4180600AD5B41 /* LocalizedSpecialty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC7B28B4180600AD5B41 /* LocalizedSpecialty.swift */; };
+		A384FC7E28B4EC6C00AD5B41 /* ShiftsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC7D28B4EC6C00AD5B41 /* ShiftsDataSource.swift */; };
+		A384FC8128B4EE0F00AD5B41 /* ShiftCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC8028B4EE0F00AD5B41 /* ShiftCellView.swift */; };
+		A384FC8328B4EE4400AD5B41 /* ShiftDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC8228B4EE4400AD5B41 /* ShiftDetailsScreen.swift */; };
+		A384FC8628B4F28E00AD5B41 /* AppTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC8528B4F28E00AD5B41 /* AppTimeManager.swift */; };
+		A384FC8928B4F2A300AD5B41 /* AppRealTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC8828B4F2A300AD5B41 /* AppRealTimeManager.swift */; };
+		A384FC8B28B4F2B300AD5B41 /* AppPreviewTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC8A28B4F2B300AD5B41 /* AppPreviewTimeManager.swift */; };
+		A384FC8D28B4F2C500AD5B41 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC8C28B4F2C500AD5B41 /* Date+Extensions.swift */; };
+		A384FC9128B4F79C00AD5B41 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9028B4F79C00AD5B41 /* UIApplication+Extensions.swift */; };
+		A384FC9328B4F7B900AD5B41 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9228B4F7B900AD5B41 /* View+Extensions.swift */; };
+		A384FC9628B4F7EB00AD5B41 /* ScreenIdentifierEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9528B4F7EB00AD5B41 /* ScreenIdentifierEnvironmentKey.swift */; };
+		A384FC9828B4F81000AD5B41 /* UUIDHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9728B4F81000AD5B41 /* UUIDHostingViewController.swift */; };
+		A384FC9A28B4F83000AD5B41 /* IdentifableScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9928B4F83000AD5B41 /* IdentifableScreen.swift */; };
+		A384FC9C28B4F83F00AD5B41 /* NavigatorWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9B28B4F83F00AD5B41 /* NavigatorWrapper.swift */; };
+		A384FC9E28B4F84B00AD5B41 /* NavigatorStrongContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9D28B4F84B00AD5B41 /* NavigatorStrongContainer.swift */; };
+		A384FCA028B4F85800AD5B41 /* NavigatorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FC9F28B4F85800AD5B41 /* NavigatorContainer.swift */; };
+		A384FCA228B4F96200AD5B41 /* DefaultShiftsScreensFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384FCA128B4F96200AD5B41 /* DefaultShiftsScreensFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +101,22 @@
 		A384FC7728B4126400AD5B41 /* Shift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shift.swift; sourceTree = "<group>"; };
 		A384FC7928B417F500AD5B41 /* FacilityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityType.swift; sourceTree = "<group>"; };
 		A384FC7B28B4180600AD5B41 /* LocalizedSpecialty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedSpecialty.swift; sourceTree = "<group>"; };
+		A384FC7D28B4EC6C00AD5B41 /* ShiftsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftsDataSource.swift; sourceTree = "<group>"; };
+		A384FC8028B4EE0F00AD5B41 /* ShiftCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCellView.swift; sourceTree = "<group>"; };
+		A384FC8228B4EE4400AD5B41 /* ShiftDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftDetailsScreen.swift; sourceTree = "<group>"; };
+		A384FC8528B4F28E00AD5B41 /* AppTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTimeManager.swift; sourceTree = "<group>"; };
+		A384FC8828B4F2A300AD5B41 /* AppRealTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRealTimeManager.swift; sourceTree = "<group>"; };
+		A384FC8A28B4F2B300AD5B41 /* AppPreviewTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreviewTimeManager.swift; sourceTree = "<group>"; };
+		A384FC8C28B4F2C500AD5B41 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		A384FC9028B4F79C00AD5B41 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		A384FC9228B4F7B900AD5B41 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		A384FC9528B4F7EB00AD5B41 /* ScreenIdentifierEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifierEnvironmentKey.swift; sourceTree = "<group>"; };
+		A384FC9728B4F81000AD5B41 /* UUIDHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDHostingViewController.swift; sourceTree = "<group>"; };
+		A384FC9928B4F83000AD5B41 /* IdentifableScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifableScreen.swift; sourceTree = "<group>"; };
+		A384FC9B28B4F83F00AD5B41 /* NavigatorWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorWrapper.swift; sourceTree = "<group>"; };
+		A384FC9D28B4F84B00AD5B41 /* NavigatorStrongContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorStrongContainer.swift; sourceTree = "<group>"; };
+		A384FC9F28B4F85800AD5B41 /* NavigatorContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorContainer.swift; sourceTree = "<group>"; };
+		A384FCA128B4F96200AD5B41 /* DefaultShiftsScreensFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultShiftsScreensFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +206,8 @@
 		A384FC4628B2BADB00AD5B41 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A384FC9428B4F7E100AD5B41 /* UI */,
+				A384FC8428B4F28500AD5B41 /* Time */,
 				A384FC5B28B4058F00AD5B41 /* ViewModel */,
 				A384FC5828B4052500AD5B41 /* ErrorHandling */,
 				A384FC5528B2C2E200AD5B41 /* Extensions */,
@@ -195,13 +229,12 @@
 		A384FC4C28B2BFB300AD5B41 /* ShiftsFeature */ = {
 			isa = PBXGroup;
 			children = (
+				A384FC8F28B4F66600AD5B41 /* Flow */,
 				A384FC7628B4124E00AD5B41 /* Model */,
 				A384FC7328B409E600AD5B41 /* Repository */,
 				A384FC5028B2C14B00AD5B41 /* Screens */,
 				2349FD88261E4F9900A1FEAA /* ShiftsView.swift */,
 				A384FC4E28B2BFE500AD5B41 /* ShiftsManager.swift */,
-				A384FC6828B4066C00AD5B41 /* ShiftsScreensFactory.swift */,
-				A384FC7128B4081B00AD5B41 /* ShiftsCoordinator.swift */,
 			);
 			path = ShiftsFeature;
 			sourceTree = "<group>";
@@ -217,8 +250,8 @@
 		A384FC5028B2C14B00AD5B41 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				A384FC5128B2C15A00AD5B41 /* ShiftsScreen.swift */,
-				A384FC6628B4064100AD5B41 /* ShiftsScreenViewModel.swift */,
+				A384FCA328B4FA2200AD5B41 /* ShiftDetailsScreen */,
+				A384FC8E28B4F5F600AD5B41 /* ShiftsScreen */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -229,6 +262,9 @@
 				A384FC5628B2C2F200AD5B41 /* Optional+Extensions.swift */,
 				A384FC5E28B405C900AD5B41 /* Just+Extensions.swift */,
 				A384FC6028B405E300AD5B41 /* Publisher+Extensions.swift */,
+				A384FC8C28B4F2C500AD5B41 /* Date+Extensions.swift */,
+				A384FC9028B4F79C00AD5B41 /* UIApplication+Extensions.swift */,
+				A384FC9228B4F7B900AD5B41 /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -264,6 +300,10 @@
 			children = (
 				A384FC4828B2BB1900AD5B41 /* Navigator.swift */,
 				A384FC5328B2C1C300AD5B41 /* NavigatorView.swift */,
+				A384FC9928B4F83000AD5B41 /* IdentifableScreen.swift */,
+				A384FC9B28B4F83F00AD5B41 /* NavigatorWrapper.swift */,
+				A384FC9D28B4F84B00AD5B41 /* NavigatorStrongContainer.swift */,
+				A384FC9F28B4F85800AD5B41 /* NavigatorContainer.swift */,
 			);
 			path = Navigator;
 			sourceTree = "<group>";
@@ -284,6 +324,70 @@
 				A384FC7B28B4180600AD5B41 /* LocalizedSpecialty.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		A384FC7F28B4EDFA00AD5B41 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC8028B4EE0F00AD5B41 /* ShiftCellView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A384FC8428B4F28500AD5B41 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC8728B4F29B00AD5B41 /* AppTimeManager */,
+				A384FC8528B4F28E00AD5B41 /* AppTimeManager.swift */,
+			);
+			path = Time;
+			sourceTree = "<group>";
+		};
+		A384FC8728B4F29B00AD5B41 /* AppTimeManager */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC8828B4F2A300AD5B41 /* AppRealTimeManager.swift */,
+				A384FC8A28B4F2B300AD5B41 /* AppPreviewTimeManager.swift */,
+			);
+			path = AppTimeManager;
+			sourceTree = "<group>";
+		};
+		A384FC8E28B4F5F600AD5B41 /* ShiftsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC7F28B4EDFA00AD5B41 /* Components */,
+				A384FC5128B2C15A00AD5B41 /* ShiftsScreen.swift */,
+				A384FC6628B4064100AD5B41 /* ShiftsScreenViewModel.swift */,
+				A384FC7D28B4EC6C00AD5B41 /* ShiftsDataSource.swift */,
+			);
+			path = ShiftsScreen;
+			sourceTree = "<group>";
+		};
+		A384FC8F28B4F66600AD5B41 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC6828B4066C00AD5B41 /* ShiftsScreensFactory.swift */,
+				A384FC7128B4081B00AD5B41 /* ShiftsCoordinator.swift */,
+				A384FCA128B4F96200AD5B41 /* DefaultShiftsScreensFactory.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		A384FC9428B4F7E100AD5B41 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC9528B4F7EB00AD5B41 /* ScreenIdentifierEnvironmentKey.swift */,
+				A384FC9728B4F81000AD5B41 /* UUIDHostingViewController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A384FCA328B4FA2200AD5B41 /* ShiftDetailsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				A384FC8228B4EE4400AD5B41 /* ShiftDetailsScreen.swift */,
+			);
+			path = ShiftDetailsScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -415,25 +519,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A384FC9628B4F7EB00AD5B41 /* ScreenIdentifierEnvironmentKey.swift in Sources */,
 				A384FC6728B4064100AD5B41 /* ShiftsScreenViewModel.swift in Sources */,
+				A384FC9328B4F7B900AD5B41 /* View+Extensions.swift in Sources */,
 				A384FC6928B4066C00AD5B41 /* ShiftsScreensFactory.swift in Sources */,
 				A384FC7C28B4180600AD5B41 /* LocalizedSpecialty.swift in Sources */,
 				A384FC7528B409F200AD5B41 /* ShiftsRepository.swift in Sources */,
 				A384FC5D28B4059800AD5B41 /* ViewModel.swift in Sources */,
 				A384FC4B28B2BE0C00AD5B41 /* Scope.swift in Sources */,
+				A384FC8628B4F28E00AD5B41 /* AppTimeManager.swift in Sources */,
+				A384FC9A28B4F83000AD5B41 /* IdentifableScreen.swift in Sources */,
 				A384FC4F28B2BFE500AD5B41 /* ShiftsManager.swift in Sources */,
+				A384FC8128B4EE0F00AD5B41 /* ShiftCellView.swift in Sources */,
 				A384FC7228B4081B00AD5B41 /* ShiftsCoordinator.swift in Sources */,
+				A384FC8328B4EE4400AD5B41 /* ShiftDetailsScreen.swift in Sources */,
+				A384FCA028B4F85800AD5B41 /* NavigatorContainer.swift in Sources */,
+				A384FCA228B4F96200AD5B41 /* DefaultShiftsScreensFactory.swift in Sources */,
 				A384FC5A28B4053D00AD5B41 /* AppError.swift in Sources */,
 				A384FC5228B2C15A00AD5B41 /* ShiftsScreen.swift in Sources */,
+				A384FC9E28B4F84B00AD5B41 /* NavigatorStrongContainer.swift in Sources */,
 				A384FC5428B2C1C300AD5B41 /* NavigatorView.swift in Sources */,
+				A384FC8928B4F2A300AD5B41 /* AppRealTimeManager.swift in Sources */,
 				2349FD89261E4F9900A1FEAA /* ShiftsView.swift in Sources */,
 				A384FC6328B405F800AD5B41 /* BaseViewModel.swift in Sources */,
 				A384FC6D28B4077600AD5B41 /* Coordinator.swift in Sources */,
+				A384FC7E28B4EC6C00AD5B41 /* ShiftsDataSource.swift in Sources */,
 				A384FC5F28B405C900AD5B41 /* Just+Extensions.swift in Sources */,
+				A384FC9128B4F79C00AD5B41 /* UIApplication+Extensions.swift in Sources */,
 				A384FC5728B2C2F200AD5B41 /* Optional+Extensions.swift in Sources */,
 				A384FC6528B4062200AD5B41 /* BaseCoordinatedViewModel.swift in Sources */,
 				2349FD5B261E4F6900A1FEAA /* CodingChallengeApp.swift in Sources */,
+				A384FC9C28B4F83F00AD5B41 /* NavigatorWrapper.swift in Sources */,
+				A384FC8B28B4F2B300AD5B41 /* AppPreviewTimeManager.swift in Sources */,
+				A384FC8D28B4F2C500AD5B41 /* Date+Extensions.swift in Sources */,
 				A384FC6128B405E300AD5B41 /* Publisher+Extensions.swift in Sources */,
+				A384FC9828B4F81000AD5B41 /* UUIDHostingViewController.swift in Sources */,
 				A384FC7828B4126400AD5B41 /* Shift.swift in Sources */,
 				A384FC4928B2BB1900AD5B41 /* Navigator.swift in Sources */,
 				A384FC7A28B417F500AD5B41 /* FacilityType.swift in Sources */,
@@ -598,7 +718,7 @@
 				DEVELOPMENT_TEAM = 7HRU3V63R2;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CodingChallenge/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -620,7 +740,7 @@
 				DEVELOPMENT_TEAM = 7HRU3V63R2;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CodingChallenge/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

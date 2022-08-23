@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Shift business layer model.
+// TODO: - Add comments.
 struct Shift {
     let shiftID: Int
     let startTime, endTime: Date

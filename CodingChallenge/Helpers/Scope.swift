@@ -19,6 +19,12 @@ import UIKit
     return target
 }
 
+/// Creates value and runs given block, then returns it.
+/// Works like defer.
+///
+/// - Parameters:
+///   - target: Target object to be returned after calling block.
+///   - block: Method to be run.
 @inline(__always) func with<T>(_ target: T, block: () -> Void) -> T {
     block()
     return target

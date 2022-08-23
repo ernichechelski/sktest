@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// View containing `ShiftsFeature`.
 struct ShiftsView: View {
     
     @StateObject var shiftsManager = ShiftsManager()
@@ -17,7 +18,6 @@ struct ShiftsView: View {
         )
     }
 }
-
 
 struct ShiftsView_Previews: PreviewProvider {
     static var previews: some View {

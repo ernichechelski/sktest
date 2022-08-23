@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Component which using inner navigator runs the Shifts feature.
 final class ShiftsManager: ObservableObject {
 
     @Published var navigator = Navigator {
@@ -16,9 +17,7 @@ final class ShiftsManager: ObservableObject {
     }
     
     private lazy var coordinator = ShiftsCoordinator(navigator: navigator)
-    
-    private let screensFactory: ShiftsScreensFactory = DefaultShiftsScreensFactory()
-    
+      
     init() {
         coordinator.begin()
     }

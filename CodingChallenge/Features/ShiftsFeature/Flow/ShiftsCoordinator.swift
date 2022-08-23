@@ -8,14 +8,17 @@
 import Foundation
 
 final class ShiftsCoordinator: Coordinator {
+    /// - SeeAlso: Coordinator
     var parentCoordinator: Coordinator?
 
+    /// - SeeAlso: Coordinator
     var childCoordinators: [Coordinator] = []
 
+    /// - SeeAlso: Coordinator
     var navigator: Navigator
 
-    var shiftsScreensFactory: ShiftsScreensFactory = DefaultShiftsScreensFactory()
-
+    private var shiftsScreensFactory: ShiftsScreensFactory = DefaultShiftsScreensFactory(timeManager: AppRealTimeManager())
+    
     init(
         parentCoordinator: Coordinator? = nil,
         childCoordinators: [Coordinator] = [],
@@ -26,6 +29,7 @@ final class ShiftsCoordinator: Coordinator {
         self.navigator = navigator
     }
 
+    /// - SeeAlso: Coordinator
     func begin() {
         navigator.set {
             [
@@ -38,7 +42,10 @@ final class ShiftsCoordinator: Coordinator {
             ]
         }
     }
-    
+}
+
+private extension ShiftsCoordinator {
+
     func presentDetails(shift: Shift) {
         _ = navigator.present {
             [

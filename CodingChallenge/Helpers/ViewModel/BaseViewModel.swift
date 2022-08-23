@@ -7,6 +7,7 @@
 
 import Combine
 
+/// Base class which manages actions loop.
 class BaseViewModel<ViewState: Equatable, Action: Equatable>: ViewModel {
 
     var state: Published<ViewState>.Publisher {

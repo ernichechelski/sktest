@@ -9,7 +9,6 @@ import Foundation
 
 enum AppError: LocalizedError {
     case development
-    case dependencyInjection(type: Any.Type)
     case arc
     case noData
     case operationCanceled
@@ -20,7 +19,6 @@ enum AppError: LocalizedError {
         case .development: return "Development error" // TODO: - Place into localisables
         case .noData: return "Required data not found" // TODO: - Place into localisables
         case .operationCanceled: return "Operation canceled" // TODO: - Place into localisables
-        case let .dependencyInjection(type): return "App could not load required component \(type)" // TODO: - Place into localisables
         }
     }
 
