@@ -32,15 +32,14 @@ struct ShiftsScreen: View {
     @ViewBuilder func readyContents(ready state: ShiftsScreenViewModel.ViewState.Ready) -> some View {
         if #available(iOS 15.0, *) {
             list(ready: state)
-            .refreshable {
-                await viewModel.pullToRefresh()
-            }
+                .refreshable {
+                    await viewModel.pullToRefresh()
+                }
         } else {
             list(ready: state)
         }
     }
-    
-    
+
     @ViewBuilder func list(ready state: ShiftsScreenViewModel.ViewState.Ready) -> some View {
         List {
             ForEach(state.shifts) { shift in
