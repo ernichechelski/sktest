@@ -9,7 +9,6 @@ import Combine
 import SwiftUI
 
 extension Publisher {
-
     /// - Returns:  A single publisher flatMapped with throwing closure.
     func tryFlatMap<Pub: Publisher>(
         maxPublishers: Subscribers.Demand = .unlimited,
@@ -26,7 +25,7 @@ extension Publisher {
             }
         }
     }
-    
+
     /// - Returns:  A single cancellable only with receiveValue sink function.
     func sink(output: @escaping (Self.Output) -> Void) -> AnyCancellable {
         sink(receiveCompletion: { _ in
@@ -34,7 +33,7 @@ extension Publisher {
             output(value)
         })
     }
-    
+
     /// - Returns:  A single publisher with set output type to Void
     func mapToVoid() -> AnyPublisher<Void, Self.Failure> {
         map { _ in () }
@@ -43,7 +42,6 @@ extension Publisher {
 }
 
 extension AnyPublisher {
-    
     /// Wraps publisher into async.
     func async() async throws -> Output {
         try await withCheckedThrowingContinuation { continuation in

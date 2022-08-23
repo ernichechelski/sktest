@@ -9,7 +9,6 @@ import Foundation
 
 // TODO: - Missing comments.
 protocol Coordinator: AnyObject {
-
     var parentCoordinator: Coordinator? { get set }
     var childCoordinators: [Coordinator] { get set }
     var navigator: Navigator { get set }
@@ -23,7 +22,6 @@ protocol Coordinator: AnyObject {
 }
 
 extension Coordinator {
-   
     var mainCoordinator: Coordinator? {
         parentCoordinator?.parentCoordinator ?? parentCoordinator ?? self
     }
@@ -31,7 +29,6 @@ extension Coordinator {
     func coordinateToParent() {
         parentCoordinator?.childDidFinish(self)
     }
-
 
     func childDidFinish(_ child: Coordinator?) {
         childCoordinators.removeAll(where: {
@@ -45,7 +42,7 @@ extension Coordinator {
         }
         childCoordinators = []
     }
-    
+
     func addChild(_ coordinator: Coordinator) {
         coordinator.parentCoordinator = self
         childCoordinators.append(coordinator)

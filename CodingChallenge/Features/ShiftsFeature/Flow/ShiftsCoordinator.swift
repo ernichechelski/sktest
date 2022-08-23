@@ -18,7 +18,7 @@ final class ShiftsCoordinator: Coordinator {
     var navigator: Navigator
 
     private var shiftsScreensFactory: ShiftsScreensFactory = DefaultShiftsScreensFactory(timeManager: AppRealTimeManager())
-    
+
     init(
         parentCoordinator: Coordinator? = nil,
         childCoordinators: [Coordinator] = [],
@@ -38,14 +38,13 @@ final class ShiftsCoordinator: Coordinator {
                     case let .onItemSelected(shift: shift):
                         self?.presentDetails(shift: shift)
                     }
-                })
+                }),
             ]
         }
     }
 }
 
 private extension ShiftsCoordinator {
-
     func presentDetails(shift: Shift) {
         _ = navigator.present {
             [
@@ -54,7 +53,7 @@ private extension ShiftsCoordinator {
                     case .onDismiss:
                         self?.navigator.dismissPresented()
                     }
-                })
+                }),
             ]
         }
     }

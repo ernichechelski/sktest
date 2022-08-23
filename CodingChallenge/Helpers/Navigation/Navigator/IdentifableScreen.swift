@@ -8,7 +8,7 @@
 import SwiftUI
 
 // TODO: - Missing comments.
-protocol IdentifableScreen  {
+protocol IdentifableScreen {
     var uuid: UUID { get }
 
     var contents: AnyView { get }

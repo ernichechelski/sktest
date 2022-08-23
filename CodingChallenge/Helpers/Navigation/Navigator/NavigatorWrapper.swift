@@ -9,7 +9,6 @@ import SwiftUI
 
 // TODO: - Missing comments.
 struct NavigatorWrapper: View {
-
     var builder: () -> [AnyView]
 
     var body: some View {

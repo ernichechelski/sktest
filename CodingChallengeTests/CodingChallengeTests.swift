@@ -5,12 +5,11 @@
 //  Created by Brady Miller on 4/7/21.
 //
 
-import XCTest
-import Combine
 @testable import CodingChallenge
+import Combine
+import XCTest
 
 class CodingChallengeTests: XCTestCase {
-
     func testExample() throws {
         let previewTimeManager = AppPreviewTimeManager()
         let dataSource = TestShiftsDataSource()
@@ -45,18 +44,18 @@ class CodingChallengeTests: XCTestCase {
                     name: "name",
                     abbreviation: "abbreviation"
                 )
-            )
+            ),
         ])
-        
+
         let testViewModel = ShiftsScreenViewModel(
             viewState: .loading,
             dataSource: dataSource
         )
-        
+
         testViewModel.send(action: .viewDidAppear)
-        
+
         let result = try awaitPublisher(testViewModel.$viewState.dropFirst())
-        
+
         XCTAssertTrue((result.currentReady?.shifts.count ?? 0) > 0)
     }
 }
@@ -65,17 +64,17 @@ private final class TestShiftsDataSource: ShiftsDataSource {
     var currentValue: [Shift] {
         value.value
     }
-    
+
     var value = CurrentValueSubject<[Shift], Never>([])
-    
+
     func shiftsSource() -> AnyPublisher<[Shift], Never> {
         value.eraseToAnyPublisher()
     }
-    
+
     func fetchInitial() -> AnyPublisher<Void, Error> {
         Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
-    
+
     func fetchNext() -> AnyPublisher<Void, Error> {
         Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }

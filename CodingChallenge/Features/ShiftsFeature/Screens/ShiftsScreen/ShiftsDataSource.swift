@@ -23,15 +23,14 @@ protocol ShiftsDataSource {
 }
 
 final class DefaultShiftsDataSource {
-    
     enum DefaultShiftsDataSourceError: LocalizedError {
         case cannotCreateDates
     }
-    
+
     private enum Constants {
         static let address = "Dallas, TX" // Fetching only for this address.
     }
-    
+
     private var currentStartDate: Date? {
         if timeManager.now.compare(selectedDate) == .orderedAscending {
             return timeManager.now
@@ -39,19 +38,19 @@ final class DefaultShiftsDataSource {
             return selectedDate.startOfWeek(timeManager: timeManager)?.startOfDay(timeManager: timeManager)
         }
     }
-    
+
     private var currentEndDate: Date? {
         currentStartDate?.endOfWeek(timeManager: timeManager)?.endOfDay(timeManager: timeManager)
     }
-    
+
     private lazy var selectedDate: Date = timeManager.now
-    
+
     private var timeManager: AppTimeManager
-    
+
     private var shiftsRepository: ShiftsRepository
-    
+
     private var value = CurrentValueSubject<[Shift], Never>([])
-    
+
     init(
         timeManager: AppTimeManager,
         shiftsRepository: ShiftsRepository
@@ -62,18 +61,17 @@ final class DefaultShiftsDataSource {
 }
 
 extension DefaultShiftsDataSource: ShiftsDataSource {
-    
     var currentValue: [Shift] { value.value }
-    
+
     func fetchInitial() -> AnyPublisher<Void, Error> {
         selectedDate = timeManager.now
         return fetchWithSelectedDate()
     }
-    
+
     func shiftsSource() -> AnyPublisher<[Shift], Never> {
         value.eraseToAnyPublisher()
     }
-    
+
     func fetchWithSelectedDate() -> AnyPublisher<Void, Error> {
         guard
             let startDate = currentStartDate,
@@ -81,7 +79,7 @@ extension DefaultShiftsDataSource: ShiftsDataSource {
         else {
             return Fail(outputType: Void.self, failure: DefaultShiftsDataSourceError.cannotCreateDates).eraseToAnyPublisher()
         }
-        
+
         return shiftsRepository.fetchShifts(
             responseType: .week,
             start: startDate,
@@ -98,7 +96,7 @@ extension DefaultShiftsDataSource: ShiftsDataSource {
         .eraseToAnyPublisher()
         .mapToVoid()
     }
-    
+
     func fetchNext() -> AnyPublisher<Void, Error> {
         selectedDate = selectedDate.byAdding(value: 1, component: .weekOfYear, timeManager: timeManager)
         return fetchWithSelectedDate()

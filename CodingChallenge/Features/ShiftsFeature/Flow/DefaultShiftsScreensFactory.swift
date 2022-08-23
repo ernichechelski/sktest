@@ -7,9 +7,10 @@
 
 import SwiftUI
 
+// TODO: - Add comments.
 final class DefaultShiftsScreensFactory {
     private let timeManager: AppTimeManager
-    
+
     init(timeManager: AppTimeManager) {
         self.timeManager = timeManager
     }
@@ -29,7 +30,7 @@ extension DefaultShiftsScreensFactory: ShiftsScreensFactory {
         )
         .asAnyView()
     }
-    
+
     func makeDetails(shift: Shift, onEvent: ((ShiftsScreensFactoryEvents.DetailsEvent) -> Void)?) -> AnyView {
         ShiftDetailsScreen(
             componentModel: .constant(ShiftDetailsScreen.ComponentModel(shiftModel: shift, timeManager: timeManager)),

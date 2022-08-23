@@ -5,27 +5,25 @@
 //  Created by Ernest Chechelski on 22/08/2022.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// Component which is used for fetching data from the real external service.
 // TODO: - Extract API client from here to reuse it between next repositories.
 // TODO: - Remove limit of fetching the shifts.
 final class ShiftsRepository {
-    
     enum ResponseType: String {
         case week
         case fourDay = "4Day"
         case list
     }
-    
+
     private let formatterISO8601 = ISO8601DateFormatter()
-    
+
     private let dayMonthYearFormatter = with(DateFormatter()) {
         $0.dateFormat = "YYYY-MM-DD"
     }
-    
-    
+
     private let dayMonthDateTimeYearFormatter = with(DateFormatter()) {
         $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
@@ -56,7 +54,7 @@ final class ShiftsRepository {
             guard let self = self else {
                 throw AppError.arc
             }
-            
+
             return try Array(shiftsDaysResponse.data.flatMap { shiftsDayResponse in
                 try shiftsDayResponse.shifts.map { shiftResponse in
                     try self.map(shiftResponse: shiftResponse)
@@ -68,11 +66,11 @@ final class ShiftsRepository {
 }
 
 private extension ShiftsRepository {
-    
     // MARK: Error handling
+
     enum ShiftsRepositoryError: LocalizedError {
         case wrongDateFormat(text: String)
-    
+
         var errorDescription: String? {
             switch self {
             case let .wrongDateFormat(text): return "App could not load the data from external server \(text)" // TODO: - Place into localisables
@@ -83,19 +81,20 @@ private extension ShiftsRepository {
             "Contact support" // TODO: - Place into localisables
         }
     }
-    
+
     // MARK: Data structures
-    
+
     struct ResponseContainer<T: Codable>: Codable {
         let data: T
     }
-    
+
     struct ShiftsDay: Codable {
         let date: String
         let shifts: [ShiftResponse]
     }
 
     // MARK: - Shift
+
     struct ShiftResponse: Codable {
         let shiftID: Int
         let startTime: String
@@ -125,6 +124,7 @@ private extension ShiftsRepository {
     }
 
     // MARK: - FacilityType
+
     struct FacilityTypeResponse: Codable {
         let id: Int
         let name, color: String
@@ -132,6 +132,7 @@ private extension ShiftsRepository {
     }
 
     // MARK: - LocalizedSpecialty
+
     struct LocalizedSpecialtyResponse: Codable {
         let id, specialtyID, stateID: Int
         let name, abbreviation: String
@@ -144,9 +145,9 @@ private extension ShiftsRepository {
             case name, abbreviation, specialty
         }
     }
-    
+
     // MARK: Mapping to map model
-    
+
     func map(shiftResponse: ShiftResponse) throws -> Shift {
         Shift(
             shiftID: shiftResponse.shiftID,
@@ -172,7 +173,7 @@ private extension ShiftsRepository {
             localizedSpecialty: map(localizedSpecialtyResponse: shiftResponse.localizedSpecialty)
         )
     }
-    
+
     func map(facilityTypeResponse: FacilityTypeResponse) -> FacilityType {
         FacilityType(
             id: facilityTypeResponse.id,
@@ -181,7 +182,7 @@ private extension ShiftsRepository {
             abbreviation: facilityTypeResponse.abbreviation
         )
     }
-    
+
     func map(localizedSpecialtyResponse: LocalizedSpecialtyResponse) -> LocalizedSpecialty {
         LocalizedSpecialty(
             id: localizedSpecialtyResponse.id,
@@ -191,9 +192,9 @@ private extension ShiftsRepository {
             abbreviation: localizedSpecialtyResponse.abbreviation
         )
     }
-    
+
     // MARK: Preparing request.
-    
+
     func shiftsData(
         responseType: ResponseType?,
         start: Date?,
@@ -201,51 +202,50 @@ private extension ShiftsRepository {
         address: String,
         radius: Float?
     ) -> AnyPublisher<ResponseContainer<[ShiftsDay]>, Error> {
-        
         let url = URL(string: "https://example.com/endpoint")!
-        
+
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
+
         var urlComponents = URLComponents(
             string: "https://staging-app.shiftkey.com/api/v2/available_shifts"
         )!
-        
+
         var queryItems = [URLQueryItem]()
-        
+
         responseType.flatMap {
             queryItems.append(URLQueryItem(name: "type", value: $0.rawValue))
         }
-        
+
         start.flatMap {
             queryItems.append(URLQueryItem(name: "start", value: formatterISO8601.string(from: $0)))
         }
-        
+
         end.flatMap {
             queryItems.append(URLQueryItem(name: "end", value: formatterISO8601.string(from: $0)))
         }
-        
+
         queryItems.append(URLQueryItem(name: "address", value: address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)))
-        
+
         radius.flatMap {
             queryItems.append(URLQueryItem(name: "end", value: "\($0)"))
         }
-        
+
         urlComponents.queryItems = queryItems
-        
+
         request.url = urlComponents.url
-        
+
         return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap() { element -> Data in
+            .tryMap { element -> Data in
                 guard let httpResponse = element.response as? HTTPURLResponse,
-                    httpResponse.statusCode == 200 else {
-                        throw URLError(.badServerResponse)
-                    }
-                return element.data
+                      httpResponse.statusCode == 200
+                else {
+                    throw URLError(.badServerResponse)
                 }
+                return element.data
+            }
             .decode(type: ResponseContainer<[ShiftsDay]>.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
 }
-

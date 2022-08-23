@@ -12,7 +12,7 @@ final class AppPreviewTimeManager: AppTimeManager {
     var timezone = TimeZone.current
     var locale = Locale.current
     var now: Date {
-        Date(timeIntervalSince1970: 1648807200) // First April 2022
+        Date(timeIntervalSince1970: 1_648_807_200) // First April 2022
     }
 
     private(set) var calendar: Calendar

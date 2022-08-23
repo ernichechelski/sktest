@@ -11,6 +11,6 @@ extension Just {
     /// Creates simple publisher, called elsewhere `Effect`.
     var asEffect: AnyPublisher<Self.Output, Error> {
         setFailureType(to: Error.self)
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
 }

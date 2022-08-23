@@ -9,15 +9,14 @@ import SwiftUI
 
 /// Component which using inner navigator runs the Shifts feature.
 final class ShiftsManager: ObservableObject {
-
     @Published var navigator = Navigator {
         [
-            EmptyView().asAnyView()
+            EmptyView().asAnyView(),
         ]
     }
-    
+
     private lazy var coordinator = ShiftsCoordinator(navigator: navigator)
-      
+
     init() {
         coordinator.begin()
     }

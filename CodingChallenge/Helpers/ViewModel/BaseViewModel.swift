@@ -9,7 +9,6 @@ import Combine
 
 /// Base class which manages actions loop.
 class BaseViewModel<ViewState: Equatable, Action: Equatable>: ViewModel {
-
     var state: Published<ViewState>.Publisher {
         $viewState
     }
@@ -36,7 +35,7 @@ class BaseViewModel<ViewState: Equatable, Action: Equatable>: ViewModel {
         setup()
     }
 
-    func handle(state: ViewState, action: Action) -> AnyPublisher<Action, Error> {
+    func handle(state _: ViewState, action _: Action) -> AnyPublisher<Action, Error> {
         fatalError("Must be overriden")
     }
 

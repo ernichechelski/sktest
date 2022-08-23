@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: - Add documentation.
 final class UUIDHostingViewController<T: View>: UIHostingController<T>, IdentifableScreen {
     let uuid: UUID
 
@@ -16,7 +17,7 @@ final class UUIDHostingViewController<T: View>: UIHostingController<T>, Identifa
     }
 
     @available(*, unavailable)
-    @MainActor dynamic required init?(coder aDecoder: NSCoder) {
+    @MainActor dynamic required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

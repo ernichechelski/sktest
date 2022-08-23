@@ -28,54 +28,39 @@ struct ShiftsScreen: View {
             viewModel.send(action: .viewDidAppear)
         }
     }
-    
-    @ViewBuilder func readyContents(ready state: ShiftsScreenViewModel.ViewState.Ready) -> some View{
+
+    @ViewBuilder func readyContents(ready state: ShiftsScreenViewModel.ViewState.Ready) -> some View {
         if #available(iOS 15.0, *) {
-            List {
-                ForEach(state.shifts) { shift in
-                    Button {
-                        viewModel.send(action: .itemSelected(item: shift))
-                    } label: {
-                        ShiftCellView(
-                            componentModel: .constant(
-                                ShiftCellView.ComponentModel(viewModel: shift)
-                            )
-                        )
-                    }
-                    .onAppear {
-                        if shift == state.shifts.last {
-                            viewModel.send(action: .listScrolledToBottom)
-                        }
-                    }
-                }
-                if state.isLoadingMore { // 7
-                    ProgressView().frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                }
-            }
+            list(ready: state)
             .refreshable {
                 await viewModel.pullToRefresh()
             }
         } else {
-            List {
-                ForEach(state.shifts) { shift in
-                    Button {
-                        viewModel.send(action: .itemSelected(item: shift))
-                    } label: {
-                        ShiftCellView(
-                            componentModel: .constant(
-                                ShiftCellView.ComponentModel(viewModel: shift)
-                            )
+            list(ready: state)
+        }
+    }
+    
+    
+    @ViewBuilder func list(ready state: ShiftsScreenViewModel.ViewState.Ready) -> some View {
+        List {
+            ForEach(state.shifts) { shift in
+                Button {
+                    viewModel.send(action: .itemSelected(item: shift))
+                } label: {
+                    ShiftCellView(
+                        componentModel: .constant(
+                            ShiftCellView.ComponentModel(viewModel: shift)
                         )
-                    }
-                    .onAppear {
-                        if shift == state.shifts.last {
-                            viewModel.send(action: .listScrolledToBottom)
-                        }
+                    )
+                }
+                .onAppear {
+                    if shift == state.shifts.last {
+                        viewModel.send(action: .listScrolledToBottom)
                     }
                 }
-                if state.isLoadingMore { // 7
-                    ProgressView().frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-                }
+            }
+            if state.isLoadingMore {
+                ProgressView().frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
             }
         }
     }

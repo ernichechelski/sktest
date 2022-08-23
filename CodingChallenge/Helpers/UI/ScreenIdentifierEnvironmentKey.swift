@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// TODO: - Add documentation.
+
 struct ScreenIdentifierEnvironmentKey: EnvironmentKey {
     static let defaultValue = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
 }

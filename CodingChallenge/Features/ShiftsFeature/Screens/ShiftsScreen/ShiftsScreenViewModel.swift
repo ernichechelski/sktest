@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 
+// TODO: - Add documentation.
 final class ShiftsScreenViewModel: BaseCoordinatedViewModel<
     ShiftsScreenViewModel.ViewState,
     ShiftsScreenViewModel.Action,
@@ -61,7 +62,7 @@ final class ShiftsScreenViewModel: BaseCoordinatedViewModel<
     }
 
     override func handle(
-        state: ViewState,
+        state _: ViewState,
         action: Action
     ) -> AnyPublisher<Action, Error> {
         switch action {
@@ -75,7 +76,7 @@ final class ShiftsScreenViewModel: BaseCoordinatedViewModel<
             return Just(Action.none).asEffect
         }
     }
-    
+
     /// To support native pull to refresh, this is async method.
     func pullToRefresh() async {
         do {
@@ -84,7 +85,7 @@ final class ShiftsScreenViewModel: BaseCoordinatedViewModel<
                 self.viewState = .ready(state: result)
             }
         } catch {
-            self.viewState = .error(text: error.localizedDescription)
+            viewState = .error(text: error.localizedDescription)
         }
     }
 }
@@ -126,7 +127,7 @@ private extension ShiftsScreenViewModel {
                     case let .failure(error):
                         self?.viewState = .error(text: error.localizedDescription)
                     }
-                
+
                 },
                 receiveRequest: { [weak self] _ in
                     self?.viewState = .loading
@@ -134,7 +135,7 @@ private extension ShiftsScreenViewModel {
             )
         return finalDataSource.flatMap { _ in Just(Action.none).asEffect }.eraseToAnyPublisher()
     }
-    
+
     func pullToRefresh() -> AnyPublisher<ViewState.Ready, Error> {
         let finalDataSource = dataSource
             .fetchInitial()
@@ -186,7 +187,7 @@ private extension ShiftsScreenViewModel {
                     self.map(shift: shift)
                 }
             }
-            .handleEvents { [weak self]  _ in
+            .handleEvents { [weak self] _ in
                 guard var currentReady = self?.viewState.currentReady else {
                     return
                 }
@@ -222,11 +223,11 @@ private extension ShiftsScreenViewModel {
     func map(shift: Shift) -> ViewState.Ready.ShiftDisplayable {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        
+
         return ViewState.Ready.ShiftDisplayable(
             id: UUID(),
             modelID: shift.shiftID,
-            timeText:  "\(dateFormatter.string(from: shift.normalizedStartDateTime))-\(dateFormatter.string(from: shift.normalizedEndDateTime))",
+            timeText: "\(dateFormatter.string(from: shift.normalizedStartDateTime))-\(dateFormatter.string(from: shift.normalizedEndDateTime))",
             timezoneText: shift.timezone,
             isPremiumRate: shift.premiumRate,
             isCovid: shift.covid,

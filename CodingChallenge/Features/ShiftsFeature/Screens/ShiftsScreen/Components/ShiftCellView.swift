@@ -8,8 +8,8 @@
 import SwiftUI
 
 /// Component for brief description of Shift. Used for cells.
+// TODO: - Improve UI.
 struct ShiftCellView: View {
-    
     struct ComponentModel: Equatable {
         /// Title on the top of the cell.
         let titleText: String
@@ -18,9 +18,9 @@ struct ShiftCellView: View {
         /// Icon on the right of the cell.
         let icon: Image
     }
-    
+
     @Binding var componentModel: ComponentModel
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -34,7 +34,6 @@ struct ShiftCellView: View {
 }
 
 extension ShiftCellView.ComponentModel {
-    
     /// Inits model from the `ShiftDisplayable`.
     init(viewModel: ShiftsScreenViewModel.ViewState.Ready.ShiftDisplayable) {
         titleText = viewModel.shiftKind
@@ -42,4 +41,3 @@ extension ShiftCellView.ComponentModel {
         icon = viewModel.isPremiumRate ? Image(systemName: "dollarsign.square") : Image(systemName: "figure.stand")
     }
 }
-
