@@ -27,3 +27,13 @@ To start working on the challenge, clone this repo onto your development machine
 * Familiarity with mobile frameworks
 * Testability
 * Submit what you feel represents your best work
+
+
+
+Comment:
+The whole solution indeed needs many fixes and adjustments, but:
+- I focused on scalability.
+- I ignored UI design at all.
+- I focused on testability of each layer.
+- Solution is ready for extraction to separate package.
+- I focused on introducing useful and reusable patterns inspired by TCA.
