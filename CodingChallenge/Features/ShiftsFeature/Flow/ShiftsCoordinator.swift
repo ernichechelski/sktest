@@ -49,10 +49,10 @@ private extension ShiftsCoordinator {
     func presentDetails(shift: Shift) {
         _ = navigator.present {
             [
-                self.shiftsScreensFactory.makeDetails(shift: shift, onEvent: { event in
+                self.shiftsScreensFactory.makeDetails(shift: shift, onEvent: { [weak self] event in
                     switch event {
                     case .onDismiss:
-                        self.navigator.dismissPresented()
+                        self?.navigator.dismissPresented()
                     }
                 })
             ]

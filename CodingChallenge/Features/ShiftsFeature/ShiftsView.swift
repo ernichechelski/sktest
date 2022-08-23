@@ -8,6 +8,9 @@
 import SwiftUI
 
 /// View containing `ShiftsFeature`.
+/// The whole solution indeed needs many fixes and adjustments, but:
+/// - I focused on scalability
+
 struct ShiftsView: View {
     
     @StateObject var shiftsManager = ShiftsManager()

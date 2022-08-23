@@ -46,11 +46,19 @@ final class DefaultShiftsDataSource {
     
     private lazy var selectedDate: Date = timeManager.now
     
-    private var timeManager: AppTimeManager = AppRealTimeManager()
+    private var timeManager: AppTimeManager
     
-    private var shiftsRepository: ShiftsRepository = ShiftsRepository()
+    private var shiftsRepository: ShiftsRepository
     
     private var value = CurrentValueSubject<[Shift], Never>([])
+    
+    init(
+        timeManager: AppTimeManager,
+        shiftsRepository: ShiftsRepository
+    ) {
+        self.timeManager = timeManager
+        self.shiftsRepository = shiftsRepository
+    }
 }
 
 extension DefaultShiftsDataSource: ShiftsDataSource {

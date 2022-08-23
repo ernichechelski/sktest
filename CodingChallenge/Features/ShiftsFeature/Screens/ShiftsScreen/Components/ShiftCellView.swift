@@ -25,7 +25,7 @@ struct ShiftCellView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(componentModel.titleText).font(.title3)
-                Text(componentModel.subtitleText).font(.subheadline)
+                Text(componentModel.subtitleText).font(.subheadline).foregroundColor(.gray)
             }
             Spacer()
             componentModel.icon
@@ -38,7 +38,7 @@ extension ShiftCellView.ComponentModel {
     /// Inits model from the `ShiftDisplayable`.
     init(viewModel: ShiftsScreenViewModel.ViewState.Ready.ShiftDisplayable) {
         titleText = viewModel.shiftKind
-        subtitleText = "\(viewModel.timeText) \(viewModel.timezoneText)"
+        subtitleText = viewModel.timeText
         icon = viewModel.isPremiumRate ? Image(systemName: "dollarsign.square") : Image(systemName: "figure.stand")
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Combine
+import SwiftUI
 
 extension Publisher {
 
@@ -38,5 +39,32 @@ extension Publisher {
     func mapToVoid() -> AnyPublisher<Void, Self.Failure> {
         map { _ in () }
             .eraseToAnyPublisher()
+    }
+}
+
+extension AnyPublisher {
+    
+    /// Wraps publisher into async.
+    func async() async throws -> Output {
+        try await withCheckedThrowingContinuation { continuation in
+            var cancellable: AnyCancellable?
+            var finishedWithoutValue = true
+            cancellable = first()
+                .receive(on: RunLoop.main)
+                .sink { result in
+                    switch result {
+                    case .finished:
+                        if finishedWithoutValue {
+                            continuation.resume(throwing: AppError.noData)
+                        }
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                    cancellable?.cancel()
+                } receiveValue: { value in
+                    finishedWithoutValue = false
+                    continuation.resume(with: .success(value))
+                }
+        }
     }
 }

@@ -20,7 +20,10 @@ extension DefaultShiftsScreensFactory: ShiftsScreensFactory {
         ShiftsScreen(
             viewModel: ShiftsScreenViewModel(
                 viewState: .loading,
-                dataSource: DefaultShiftsDataSource(),
+                dataSource: DefaultShiftsDataSource(
+                    timeManager: AppRealTimeManager(),
+                    shiftsRepository: ShiftsRepository()
+                ),
                 onEvent: onEvent
             )
         )

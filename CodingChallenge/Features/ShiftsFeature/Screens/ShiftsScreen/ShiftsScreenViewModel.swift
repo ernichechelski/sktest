@@ -75,77 +75,137 @@ final class ShiftsScreenViewModel: BaseCoordinatedViewModel<
             return Just(Action.none).asEffect
         }
     }
+    
+    /// To support native pull to refresh, this is async method.
+    func pullToRefresh() async {
+        do {
+            let result = try await pullToRefresh().async()
+            await MainActor.run {
+                self.viewState = .ready(state: result)
+            }
+        } catch {
+            self.viewState = .error(text: error.localizedDescription)
+        }
+    }
 }
 
 private extension ShiftsScreenViewModel {
     func onViewDidAppear() -> AnyPublisher<Action, Error> {
         let finalDataSource = dataSource
             .fetchInitial()
-            .flatMap {
-                self.dataSource
+            .tryFlatMap { [weak self] _ -> AnyPublisher<[Shift], Error> in
+                guard let self = self else {
+                    throw AppError.arc
+                }
+                return self.dataSource
                     .shiftsSource()
                     .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
             }
             .first()
-            .receive(on: RunLoop.main)
-            .map { shifts in
-                shifts.map { shift in
+            .eraseToAnyPublisher()
+            .tryMap { [weak self] shifts in
+                guard let self = self else {
+                    throw AppError.arc
+                }
+                return shifts.map { shift in
                     self.map(shift: shift)
                 }
             }
-            .handleEvents { _ in
-                self.viewState = .loading
-            } receiveOutput: { shifts in
-                self.viewState = .ready(state: ViewState.Ready(isLoadingMore: false, shifts: shifts))
-            } receiveCompletion: { completion in
-                switch completion {
-                case .finished: break
-                case let .failure(error):
-                    self.viewState = .error(text: error.localizedDescription)
+            .receive(on: RunLoop.main)
+            .handleEvents(
+                receiveSubscription: { [weak self] _ in
+                    self?.viewState = .loading
+                },
+                receiveOutput: { [weak self] shifts in
+                    self?.viewState = .ready(state: ViewState.Ready(isLoadingMore: false, shifts: shifts))
+                },
+                receiveCompletion: { [weak self] completion in
+                    switch completion {
+                    case .finished: break
+                    case let .failure(error):
+                        self?.viewState = .error(text: error.localizedDescription)
+                    }
+                
+                },
+                receiveRequest: { [weak self] _ in
+                    self?.viewState = .loading
                 }
-            } receiveCancel: {
-            } receiveRequest: { _ in
-                self.viewState = .loading
-            }
+            )
         return finalDataSource.flatMap { _ in Just(Action.none).asEffect }.eraseToAnyPublisher()
+    }
+    
+    func pullToRefresh() -> AnyPublisher<ViewState.Ready, Error> {
+        let finalDataSource = dataSource
+            .fetchInitial()
+            .tryFlatMap { [weak self] _ -> AnyPublisher<[Shift], Error> in
+                guard let self = self else {
+                    throw AppError.arc
+                }
+                return self.dataSource
+                    .shiftsSource()
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            }
+            .first()
+            .eraseToAnyPublisher()
+            .receive(on: RunLoop.main)
+            .tryMap { [weak self] shifts in
+                guard let self = self else {
+                    throw AppError.arc
+                }
+                return shifts.map { shift in
+                    self.map(shift: shift)
+                }
+            }
+            .map { shifts in
+                ViewState.Ready(isLoadingMore: false, shifts: shifts)
+            }
+        return finalDataSource.eraseToAnyPublisher()
     }
 
     func onListScrolledToBottom() -> AnyPublisher<Action, Error> {
         let finalDataSource = dataSource
             .fetchNext()
-            .flatMap {
-                self.dataSource
+            .tryFlatMap { [weak self] _ -> AnyPublisher<[Shift], Error> in
+                guard let self = self else {
+                    throw AppError.arc
+                }
+                return self.dataSource
                     .shiftsSource()
                     .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
             }
             .first()
             .receive(on: RunLoop.main)
-            .map { shifts in
-                shifts.map({ shift in
+            .tryMap { [weak self] shifts in
+                guard let self = self else {
+                    throw AppError.arc
+                }
+                return shifts.map { shift in
                     self.map(shift: shift)
-                })
+                }
             }
-            .handleEvents { _ in
-                guard var currentReady = self.viewState.currentReady else {
+            .handleEvents { [weak self]  _ in
+                guard var currentReady = self?.viewState.currentReady else {
                     return
                 }
                 currentReady.isLoadingMore = true
-                self.viewState = .ready(state: currentReady)
-            } receiveOutput: { shifts in
-                self.viewState = .ready(state: ViewState.Ready(isLoadingMore: false, shifts: shifts))
-            } receiveCompletion: { completion in
+                self?.viewState = .ready(state: currentReady)
+            } receiveOutput: { [weak self] shifts in
+                self?.viewState = .ready(state: ViewState.Ready(isLoadingMore: false, shifts: shifts))
+            } receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished: break
                 case let .failure(error):
-                    self.viewState = .error(text: error.localizedDescription)
+                    self?.viewState = .error(text: error.localizedDescription)
                 }
-            } receiveCancel: {
-            } receiveRequest: { _ in
-                guard var currentReady = self.viewState.currentReady else {
+            } receiveRequest: { [weak self] _ in
+                guard var currentReady = self?.viewState.currentReady else {
                     return
                 }
                 currentReady.isLoadingMore = true
-                self.viewState = .ready(state: currentReady)
+                self?.viewState = .ready(state: currentReady)
             }
         return finalDataSource.flatMap { _ in Just(Action.none).asEffect }.eraseToAnyPublisher()
     }
@@ -160,10 +220,13 @@ private extension ShiftsScreenViewModel {
     }
 
     func map(shift: Shift) -> ViewState.Ready.ShiftDisplayable {
-        ViewState.Ready.ShiftDisplayable(
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        
+        return ViewState.Ready.ShiftDisplayable(
             id: UUID(),
             modelID: shift.shiftID,
-            timeText: "\(shift.normalizedStartDateTime)",
+            timeText:  "\(dateFormatter.string(from: shift.normalizedStartDateTime))-\(dateFormatter.string(from: shift.normalizedEndDateTime))",
             timezoneText: shift.timezone,
             isPremiumRate: shift.premiumRate,
             isCovid: shift.covid,
